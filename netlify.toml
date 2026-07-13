@@ -1,20 +1,5 @@
 [build]
   command = "npm run build"
 
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-
-[[redirects]]
-  from = "/_next/*"
-  to = "/_next/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/___netlify-handler"
-  status = 200
-
-[[scheduled.functions]]
-  name = "daily-refresh"
-  cron = "0 6 * * *"
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
