@@ -7,3 +7,6 @@ node_modules
 *.log
 *.sqlite
 *.db
+.neon
+.agents/
+skills-lock.json

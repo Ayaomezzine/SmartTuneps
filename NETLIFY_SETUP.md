@@ -6,7 +6,7 @@ Connect GitHub and select `Ayaomezzine/SmartTuneps`.
 ## 2. Set environment variables
 Add these in Netlify Site Settings > Environment variables:
 
-- `DATABASE_URL` = hosted Postgres connection string
+- `DATABASE_URL` = Neon Postgres connection string
 - `JWT_SECRET` = long random secret
 - `CRON_SECRET` = long random secret used by the daily job
 - `PUBLIC_APP_URL` = your Netlify site URL
@@ -19,4 +19,4 @@ Netlify will use `netlify.toml` and run `npm run build`.
 The scheduled function runs daily at 06:00 using `netlify/functions/daily-refresh.ts`.
 
 ## Important
-This app should not use SQLite in production on Netlify. Switch `DATABASE_URL` to Postgres before relying on logins and daily refreshes.
+This app should not use SQLite in production on Netlify. Use Neon Postgres for `DATABASE_URL` before relying on logins and daily refreshes.
