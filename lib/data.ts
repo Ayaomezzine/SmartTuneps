@@ -298,11 +298,23 @@ async function ensureConsultationsFresh() {
     return;
   }
 
+  if (activeConsultationsCount === 0) {
+    // On serverless, fire-and-forget background work may be terminated when the request ends.
+    // Awaiting the first refresh avoids a persistent empty dashboard window.
+    await runCrawlerJob({
+      maxPages: 20,
+      pageSize: 100,
+      trigger: 'auto-dashboard',
+      force: true
+    });
+    return;
+  }
+
   void runCrawlerJob({
     maxPages: 20,
     pageSize: 100,
     trigger: 'auto-dashboard',
-    force: activeConsultationsCount === 0
+    force: false
   }).catch(() => undefined);
 }
 
