@@ -28,7 +28,7 @@ export async function postJsonWithRetry(url: string, options: RequestOptions = {
       });
 
       const rawResponse = await response.text();
-      let data: any = {};
+      let data: unknown = {};
 
       if (rawResponse) {
         try {

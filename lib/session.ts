@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose';
-import type { NextRequest, NextResponse } from 'next/server';
+import type { NextResponse } from 'next/server';
 
 const SESSION_COOKIE = 'smart_tuneps_session';
 

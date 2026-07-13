@@ -5,7 +5,7 @@ import { createSessionToken, setSessionCookie } from '@/lib/session';
 import { registerSchema } from '@/lib/validators';
 
 export async function POST(request: Request) {
-  const body = await request.json();
+  const body = await request.json().catch(() => ({}));
   const parsed = registerSchema.safeParse(body);
 
   if (!parsed.success) {

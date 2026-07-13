@@ -22,8 +22,6 @@ type RawSeed = {
   }>;
 };
 
-type ConsultationRow = Awaited<ReturnType<typeof prisma.consultation.findFirst>>;
-
 function computeRemainingDays(deadline: Date) {
   return Math.max(0, Math.ceil((deadline.getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
 }

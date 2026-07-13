@@ -329,7 +329,7 @@ export function DashboardClient({ consultations, profile, savedIds: initialSaved
     }
 
     return shortlist;
-  }, [activeRelevantFallback, enriched, todayActiveFallback]);
+  }, [activeRelevantFallback, todayActiveFallback]);
 
   const minimumDailyShortlist = !hasActiveUserFilters && filtered.length < 5
     ? blendedDailyFallback
@@ -425,7 +425,7 @@ export function DashboardClient({ consultations, profile, savedIds: initialSaved
               Voir les consultations pertinentes
             </a>
             <a className="button" href="#assistant">
-              Ouvrir l'assistant IA
+              Ouvrir l&apos;assistant IA
             </a>
           </div>
           <div className="hero-badges">
@@ -519,7 +519,7 @@ export function DashboardClient({ consultations, profile, savedIds: initialSaved
         <section className="section" id="consultations">
           <div className="section-head">
             <div>
-              <p className="hero-kicker">Consultations pertinentes d'aujourd'hui et d'hier</p>
+              <p className="hero-kicker">Consultations pertinentes d&apos;aujourd&apos;hui et d&apos;hier</p>
               <h3 className="section-title">Flux trie par date limite</h3>
               <p className="section-subtitle">
                 Les resultats sont scores semantiquement a partir de votre profil et de votre catalogue sur les publications des deux derniers jours.
@@ -561,7 +561,7 @@ export function DashboardClient({ consultations, profile, savedIds: initialSaved
             <div className="timeline">
               <div className="timeline-item">
                 <h4>Focus actuel</h4>
-                <p>L'algorithme privilegie les consultations reliees a vos produits du catalogue et exclut les lots hors perimetre.</p>
+                <p>L&apos;algorithme privilegie les consultations reliees a vos produits du catalogue et exclut les lots hors perimetre.</p>
               </div>
               <div className="timeline-item">
                 <h4>Pression delai</h4>

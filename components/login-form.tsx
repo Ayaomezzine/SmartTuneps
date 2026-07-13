@@ -4,6 +4,15 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { postJsonWithRetry } from '@/lib/client-request';
 
+function readErrorMessage(value: unknown) {
+  if (typeof value === 'string') return value;
+  if (!value || typeof value !== 'object') return null;
+
+  const errorValue = (value as { error?: unknown }).error;
+  if (typeof errorValue === 'string') return errorValue;
+  return null;
+}
+
 export function LoginForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +33,7 @@ export function LoginForm() {
     setLoading(false);
 
     if (!result.ok) {
-      setError(result.status === 0 ? 'Unable to reach the server. Please try again.' : result.data?.error ?? 'Unable to sign in.');
+      setError(result.status === 0 ? 'Unable to reach the server. Please try again.' : readErrorMessage(result.data) ?? 'Unable to sign in.');
       return;
     }
 

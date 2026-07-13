@@ -88,16 +88,6 @@ function scoreOverlap(left: string[], right: string[]) {
   return hits / Math.max(right.length, left.length);
 }
 
-function overlapCount(left: string[], right: string[]) {
-  if (!left.length || !right.length) return 0;
-  const rightSet = new Set(right);
-  let hits = 0;
-  for (const token of left) {
-    if (rightSet.has(token)) hits += 1;
-  }
-  return hits;
-}
-
 function overlappingTokens(left: string[], right: string[]) {
   if (!left.length || !right.length) return [] as string[];
   const rightSet = new Set(right);

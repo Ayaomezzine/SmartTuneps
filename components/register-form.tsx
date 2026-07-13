@@ -6,6 +6,22 @@ import { postJsonWithRetry } from '@/lib/client-request';
 
 const defaultProducts = ['Office Supplies', 'Stationery', 'Paper', 'Printers', 'Furniture', 'IT Equipment', 'Networking'].join(', ');
 
+function readRegisterError(value: unknown) {
+  if (!value || typeof value !== 'object') return null;
+
+  const errorValue = (value as { error?: unknown }).error;
+  if (typeof errorValue === 'string') return errorValue;
+
+  if (errorValue && typeof errorValue === 'object') {
+    const formErrors = (errorValue as { formErrors?: unknown }).formErrors;
+    if (Array.isArray(formErrors)) {
+      return formErrors.filter((item): item is string => typeof item === 'string').join(', ');
+    }
+  }
+
+  return null;
+}
+
 export function RegisterForm() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -42,17 +58,12 @@ export function RegisterForm() {
     setLoading(false);
 
     if (!response.ok) {
-      const errorPayload = response.data as { error?: { formErrors?: string[] } | string } | null;
       if (response.status === 0) {
         setError('Unable to reach the server. Please try again.');
         return;
       }
 
-      setError(
-        typeof errorPayload?.error === 'string'
-          ? errorPayload.error
-          : errorPayload?.error?.formErrors?.join(', ') ?? 'Unable to create account.'
-      );
+      setError(readRegisterError(response.data) ?? 'Unable to create account.');
       return;
     }
 
