@@ -1,14 +1,32 @@
 import { AppShell } from '@/components/app-shell';
 import { CompanyForm } from '@/components/company-form';
 import { getCurrentUser } from '@/lib/current-user';
-import { redirect } from 'next/navigation';
+import { defaultBusinessProfile } from '@/lib/data';
 
 export default async function CompanyProfilePage() {
   const user = await getCurrentUser();
 
-  if (!user?.company) {
-    redirect('/login');
-  }
+  const initialValues = user?.company
+    ? {
+      companyName: user.company.companyName,
+      businessSector: user.company.businessSector,
+      vatNumber: user.company.vatNumber ?? '',
+      address: user.company.address,
+      phone: user.company.phone,
+      email: user.company.email,
+      productsJson: user.company.productsJson,
+      customProducts: user.company.customProducts
+    }
+    : {
+      companyName: defaultBusinessProfile.companyName,
+      businessSector: defaultBusinessProfile.businessSector,
+      vatNumber: defaultBusinessProfile.vatNumber ?? '',
+      address: defaultBusinessProfile.address,
+      phone: defaultBusinessProfile.phone,
+      email: defaultBusinessProfile.email,
+      productsJson: JSON.stringify(defaultBusinessProfile.products),
+      customProducts: defaultBusinessProfile.customProducts
+    };
 
   return (
     <AppShell activeHref="/company-profile" title="Company profile" subtitle="Describe your company so the AI can match consultations more accurately.">
@@ -19,16 +37,7 @@ export default async function CompanyProfilePage() {
             <h2 className="section-title">Business information</h2>
             <p className="section-subtitle">Every client can store a clean, structured company profile.</p>
           </div>
-          <CompanyForm initialValues={{
-            companyName: user.company.companyName,
-            businessSector: user.company.businessSector,
-            vatNumber: user.company.vatNumber ?? '',
-            address: user.company.address,
-            phone: user.company.phone,
-            email: user.company.email,
-            productsJson: user.company.productsJson,
-            customProducts: user.company.customProducts
-          }} />
+          <CompanyForm initialValues={initialValues} />
         </section>
 
         <aside className="section">

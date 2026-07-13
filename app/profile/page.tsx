@@ -1,14 +1,23 @@
 import { AppShell } from '@/components/app-shell';
 import { ProfileForm } from '@/components/profile-form';
 import { getCurrentUser } from '@/lib/current-user';
-import { redirect } from 'next/navigation';
 
 export default async function ProfilePage() {
   const user = await getCurrentUser();
 
-  if (!user) {
-    redirect('/login');
-  }
+  const initialValues = user
+    ? {
+      name: user.name,
+      email: user.email,
+      phone: user.phone ?? '',
+      notificationPreferences: user.notificationPreferences
+    }
+    : {
+      name: 'Utilisateur Smart TUNEPS',
+      email: 'contact@smart-tuneps.tn',
+      phone: '+216 70 000 000',
+      notificationPreferences: '{}'
+    };
 
   return (
     <AppShell activeHref="/profile" title="User profile" subtitle="Manage your account, notification preferences, and saved searches.">
@@ -19,12 +28,7 @@ export default async function ProfilePage() {
             <h2 className="section-title">Personal settings</h2>
             <p className="section-subtitle">Keep your access details and alert preferences up to date.</p>
           </div>
-          <ProfileForm initialValues={{
-            name: user.name,
-            email: user.email,
-            phone: user.phone ?? '',
-            notificationPreferences: user.notificationPreferences
-          }} />
+          <ProfileForm initialValues={initialValues} />
         </section>
 
         <aside className="section">

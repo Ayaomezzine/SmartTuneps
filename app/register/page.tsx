@@ -1,20 +1,5 @@
-import Link from 'next/link';
-import { AuthShell } from '@/components/auth-shell';
-import { RegisterForm } from '@/components/register-form';
+import { redirect } from 'next/navigation';
 
 export default function RegisterPage() {
-  return (
-    <AuthShell
-      eyebrow="Commencer"
-      title="Creer votre compte Smart TUNEPS"
-      subtitle="Configurez votre profil entreprise, vos categories de produits et vos alertes en quelques minutes."
-      footer={
-        <>
-          Deja inscrit ? <Link href="/login">Se connecter</Link>.
-        </>
-      }
-    >
-      <RegisterForm />
-    </AuthShell>
-  );
+  redirect('/dashboard');
 }

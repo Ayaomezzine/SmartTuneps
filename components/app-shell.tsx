@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { primaryNavigation } from '@/lib/navigation';
-import { LogoutButton } from './logout-button';
 import { ThemeToggle } from './theme-toggle';
 
 interface AppShellProps {
@@ -53,7 +52,6 @@ export function AppShell({ activeHref, title, subtitle, children }: AppShellProp
             <p className="topbar-subtitle">{subtitle}</p>
           </div>
           <div className="topbar-actions">
-            <LogoutButton />
             <ThemeToggle />
           </div>
         </header>
