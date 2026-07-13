@@ -24,7 +24,7 @@ export default async function ConsultationPage({ params }: ConsultationPageProps
   return (
     <AppShell
       activeHref="/dashboard"
-      title="Details consultation"
+      title="Details de la consultation"
       subtitle="Synthese IA, produits correspondants et documents officiels." 
     >
       <ConsultationDetail consultation={consultation} related={related} />

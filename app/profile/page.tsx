@@ -13,40 +13,40 @@ export default async function ProfilePage() {
       notificationPreferences: user.notificationPreferences
     }
     : {
-      name: 'Utilisateur Smart TUNEPS',
-      email: 'contact@smart-tuneps.tn',
+      name: 'Utilisateur TPS',
+      email: 'contact@tps.tn',
       phone: '+216 70 000 000',
       notificationPreferences: '{}'
     };
 
   return (
-    <AppShell activeHref="/profile" title="User profile" subtitle="Manage your account, notification preferences, and saved searches.">
+    <AppShell activeHref="/profile" title="Profil utilisateur" subtitle="Gerez votre compte, vos notifications et vos consultations sauvegardees.">
       <div className="detail-grid">
         <section className="detail-card section">
           <div>
-            <p className="hero-kicker">Account</p>
-            <h2 className="section-title">Personal settings</h2>
-            <p className="section-subtitle">Keep your access details and alert preferences up to date.</p>
+            <p className="hero-kicker">Compte</p>
+            <h2 className="section-title">Parametres personnels</h2>
+            <p className="section-subtitle">Gardez vos informations d acces et preferences d alerte a jour.</p>
           </div>
           <ProfileForm initialValues={initialValues} />
         </section>
 
         <aside className="section">
           <div className="widget">
-            <p className="hero-kicker">Activity</p>
-            <h3 className="section-title">Saved and submitted work</h3>
+            <p className="hero-kicker">Activite</p>
+            <h3 className="section-title">Suivi des consultations</h3>
             <div className="list-stack">
               <div className="list-item">
-                <h4>Saved consultations</h4>
-                <p>All shortlisted consultations stay available in the favorites view.</p>
+                <h4>Consultations sauvegardees</h4>
+                <p>Toutes les consultations shortlistes restent disponibles dans la vue favoris.</p>
               </div>
               <div className="list-item">
-                <h4>Status tracking</h4>
-                <p>Mark items as submitted, won, or lost to keep your team aligned.</p>
+                <h4>Suivi des statuts</h4>
+                <p>Marquez les elements comme soumis, gagnes ou perdus pour aligner votre equipe.</p>
               </div>
               <div className="list-item">
-                <h4>Unread alerts</h4>
-                <p>Unread and urgent consultations stay visible until you open or dismiss them.</p>
+                <h4>Alertes non lues</h4>
+                <p>Les consultations non lues et urgentes restent visibles jusqu a ouverture ou suppression.</p>
               </div>
             </div>
           </div>

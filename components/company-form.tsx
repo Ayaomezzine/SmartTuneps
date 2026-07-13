@@ -42,30 +42,30 @@ export function CompanyForm({ initialValues }: CompanyFormProps) {
     });
 
     if (response.ok) {
-      setMessage('Company profile saved.');
+      setMessage('Profil entreprise enregistre.');
       router.refresh();
     } else {
       const data = await response.json();
-      setMessage(data.error ?? 'Unable to update company profile.');
+      setMessage(data.error ?? 'Impossible de mettre a jour le profil entreprise.');
     }
   }
 
   return (
     <form className="profile-grid" onSubmit={handleSubmit}>
       <label className="field">
-        <span>Company name</span>
+        <span>Nom de l entreprise</span>
         <input className="input" name="companyName" type="text" defaultValue={initialValues.companyName} required />
       </label>
       <label className="field">
-        <span>Business sector</span>
+        <span>Secteur d activite</span>
         <input className="input" name="businessSector" type="text" defaultValue={initialValues.businessSector} required />
       </label>
       <label className="field">
-        <span>VAT number</span>
+        <span>Matricule fiscal</span>
         <input className="input" name="vatNumber" type="text" defaultValue={initialValues.vatNumber} />
       </label>
       <label className="field">
-        <span>Address</span>
+        <span>Adresse</span>
         <input className="input" name="address" type="text" defaultValue={initialValues.address} required />
       </label>
       <label className="field">
@@ -77,16 +77,16 @@ export function CompanyForm({ initialValues }: CompanyFormProps) {
         <input className="input" name="email" type="email" defaultValue={initialValues.email} required />
       </label>
       <label className="field">
-        <span>Products</span>
+        <span>Produits</span>
         <input className="input" name="products" type="text" defaultValue={initialValues.productsJson.replace(/^[\[]|[\]]$/g, '').replace(/"/g, '')} />
       </label>
       <label className="field">
-        <span>Custom products description</span>
+        <span>Description des produits personnalises</span>
         <textarea className="textarea" name="customProducts" defaultValue={initialValues.customProducts} />
       </label>
       {message ? <div className="assistant-answer">{message}</div> : null}
       <button className="button-strong" type="submit">
-        Save company profile
+        Enregistrer le profil entreprise
       </button>
     </form>
   );

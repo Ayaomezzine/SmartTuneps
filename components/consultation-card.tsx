@@ -30,7 +30,7 @@ export function ConsultationCard({
   onShare,
   onMarkRead
 }: ConsultationCardProps) {
-  const urgencyLabel = consultation.urgency === 'urgent' ? 'Urgent' : consultation.urgency === 'soon' ? 'Bientot' : 'Normal';
+  const urgencyLabel = consultation.urgency === 'urgent' ? 'Urgent' : consultation.urgency === 'soon' ? 'Bientot' : 'Normale';
   const matchClass = matchScore >= 80 ? 'match-high' : matchScore >= 65 ? 'match-mid' : 'match-low';
 
   return (
@@ -38,7 +38,7 @@ export function ConsultationCard({
       <div className="card-top">
         <div>
           <div className="card-meta">
-            <span className={`badge ${matchClass}`}>{matchScore}% score</span>
+            <span className={`badge ${matchClass}`}>{matchScore}% note</span>
             <span className="badge neutral">Confiance {confidenceScore}%</span>
             <span className="badge neutral">{consultation.language}</span>
             <span className="badge urgent">{urgencyLabel}</span>
@@ -74,7 +74,7 @@ export function ConsultationCard({
         </div>
         <div className="actions-row">
           <Link className="button" href={`/consultations/${consultation.id}`} onClick={() => onMarkRead(consultation.id)}>
-            Voir details
+            Voir les details
           </Link>
           <a className="button" href={consultation.directLink} target="_blank" rel="noreferrer">
             Ouvrir consultation officielle

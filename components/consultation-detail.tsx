@@ -11,7 +11,7 @@ export function ConsultationDetail({ consultation, related }: ConsultationDetail
     <div className="page-grid">
       <section className="hero reveal">
         <div className="hero-panel">
-          <p className="hero-kicker">Detail consultation</p>
+          <p className="hero-kicker">Detail de la consultation</p>
           <h2 className="hero-title">
             {consultation.originalTitle}
           </h2>
@@ -39,7 +39,7 @@ export function ConsultationDetail({ consultation, related }: ConsultationDetail
         <div className="panel">
           <div className="section-head">
             <div>
-              <p className="hero-kicker">Opportunity snapshot</p>
+              <p className="hero-kicker">Apercu opportunite</p>
               <h3 className="section-title">Pourquoi cette consultation a ete retenue</h3>
             </div>
             <span className="badge neutral">{consultation.urgency}</span>

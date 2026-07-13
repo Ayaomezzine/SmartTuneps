@@ -50,14 +50,14 @@ function isPublishedRecently(value: Date, now = new Date()) {
 }
 
 export const defaultBusinessProfile: BusinessProfile = {
-  companyName: 'Atlas Office Supply',
-  businessSector: 'Office Supplies and IT Equipment',
+  companyName: 'TPS',
+  businessSector: 'Fournitures de bureau et equipement informatique',
   vatNumber: '1234567/A',
-  address: 'Tunis, Tunisia',
+  address: 'Tunis, Tunisie',
   phone: '+216 70 000 000',
-  email: 'hello@atlasoffice.tn',
-  products: ['Office Supplies', 'Stationery', 'Paper', 'Printers', 'Furniture', 'IT Equipment', 'Networking'],
-  customProducts: 'I sell Epson toners, Dell laptops, office chairs, A4 paper, and administrative stationery.'
+  email: 'contact@tps.tn',
+  products: ['Fournitures de bureau', 'Papeterie', 'Papier', 'Imprimantes', 'Mobilier', 'Equipement informatique', 'Reseau'],
+  customProducts: 'Je vends des toners Epson, des PC portables Dell, des chaises de bureau, du papier A4 et de la papeterie administrative.'
 };
 
 function sanitizeText(value?: string) {
@@ -101,17 +101,17 @@ async function buildConsultation(item: RawSeed['items'][number], profileText: st
 
   const productsRequested = match.matchingCategories.length
     ? match.matchingCategories
-    : [item.matchedBy?.replace('shopNmFr:', '').replace('shopNmAr:', '') || 'General procurement'];
+    : [item.matchedBy?.replace('shopNmFr:', '').replace('shopNmAr:', '') || 'Approvisionnement general'];
 
   const lots = Array.from(new Set((title.match(/\b\d+\b/g) ?? []).slice(0, 3)));
   const technicalSpecifications = [
-    item.matchedBy?.replace('shopNmFr:', '').replace('shopNmAr:', '').toLowerCase() || 'tender notice',
-    title.length > 55 ? 'multi-item request' : 'single-line request',
-    /imprim|photocop|printer/i.test(title) ? 'printing equipment compatibility' : 'standard procurement compliance'
+    item.matchedBy?.replace('shopNmFr:', '').replace('shopNmAr:', '').toLowerCase() || 'avis d appel d offres',
+    title.length > 55 ? 'demande multi-articles' : 'demande simple',
+    /imprim|photocop|printer/i.test(title) ? 'compatibilite equipement impression' : 'conformite standard marche public'
   ];
 
   const translatedTitle = language === 'Arabic'
-    ? 'French translation available in the AI summary'
+    ? 'Traduction francaise disponible dans le resume IA'
     : title;
 
   return {
@@ -123,7 +123,7 @@ async function buildConsultation(item: RawSeed['items'][number], profileText: st
     publicationDate,
     deadline,
     language,
-    category: match.matchingCategories[0] ?? 'General Supplies',
+    category: match.matchingCategories[0] ?? 'Fournitures generales',
     matchScore: match.score,
     confidenceScore: match.confidence,
     matchingProducts: match.matchingProducts,
@@ -131,7 +131,7 @@ async function buildConsultation(item: RawSeed['items'][number], profileText: st
     urgency,
     aiSummary: buildAiSummary(title, match.matchingProducts, match.matchingCategories),
     productsRequested: match.matchingProducts.length ? match.matchingProducts : productsRequested,
-    lots: lots.length ? lots : ['Main lot'],
+    lots: lots.length ? lots : ['Lot principal'],
     technicalSpecifications,
     estimatedOpportunity: match.estimatedOpportunity,
     potentialCompetitors: [...match.potentialCompetitors],

@@ -29,8 +29,8 @@ const headingFont = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'Smart TUNEPS',
-  description: 'AI-powered procurement discovery and matching for TUNEPS consultations.'
+  title: 'TPS',
+  description: 'Plateforme IA de veille et de matching pour les consultations TUNEPS.'
 };
 
 export default function RootLayout({
@@ -39,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>

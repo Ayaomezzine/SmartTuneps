@@ -29,23 +29,23 @@ export default async function CompanyProfilePage() {
     };
 
   return (
-    <AppShell activeHref="/company-profile" title="Company profile" subtitle="Describe your company so the AI can match consultations more accurately.">
+    <AppShell activeHref="/company-profile" title="Profil entreprise" subtitle="Decrivez votre entreprise pour que l IA trouve des consultations plus pertinentes.">
       <div className="detail-grid">
         <section className="detail-card section">
           <div>
-            <p className="hero-kicker">Company data</p>
-            <h2 className="section-title">Business information</h2>
-            <p className="section-subtitle">Every client can store a clean, structured company profile.</p>
+            <p className="hero-kicker">Donnees entreprise</p>
+            <h2 className="section-title">Informations de l entreprise</h2>
+            <p className="section-subtitle">Chaque client peut enregistrer un profil entreprise clair et structure.</p>
           </div>
           <CompanyForm initialValues={initialValues} />
         </section>
 
         <aside className="section">
           <div className="widget">
-            <p className="hero-kicker">Product profile</p>
-            <h3 className="section-title">What the company sells</h3>
+            <p className="hero-kicker">Profil produits</p>
+            <h3 className="section-title">Ce que vend l entreprise</h3>
             <div className="profile-tags">
-              {['Office Supplies', 'Stationery', 'Paper', 'Printers', 'Furniture', 'IT Equipment', 'Networking', 'Custom products'].map((product) => (
+              {['Fournitures de bureau', 'Papeterie', 'Papier', 'Imprimantes', 'Mobilier', 'Equipement informatique', 'Reseau', 'Produits personnalises'].map((product) => (
                 <span className="tag" key={product}>
                   {product}
                 </span>
@@ -53,12 +53,12 @@ export default async function CompanyProfilePage() {
             </div>
           </div>
           <div className="widget">
-            <p className="hero-kicker">Custom products</p>
-            <h3 className="section-title">Natural language support</h3>
+            <p className="hero-kicker">Produits personnalises</p>
+            <h3 className="section-title">Support langage naturel</h3>
             <p className="section-subtitle">
-              The AI can read a sentence like: I sell Epson toners, Dell laptops, and office chairs.
+              L IA peut lire une phrase comme : Je vends des toners Epson, des PC portables Dell et des chaises de bureau.
             </p>
-            <textarea className="textarea" defaultValue="I sell Epson toners, Dell laptops and office chairs." />
+            <textarea className="textarea" defaultValue="Je vends des toners Epson, des PC portables Dell et des chaises de bureau." />
           </div>
         </aside>
       </div>

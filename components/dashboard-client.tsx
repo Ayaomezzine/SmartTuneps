@@ -417,7 +417,7 @@ export function DashboardClient({ consultations, profile, savedIds: initialSaved
             Identifiez les consultations <strong>TUNEPS</strong> pertinentes avant vos concurrents.
           </h2>
           <p className="hero-copy">
-            Smart TUNEPS analyse chaque consultation en francais et en arabe, compare au catalogue produit
+            TPS analyse chaque consultation en francais et en arabe, compare au catalogue produit
             et affiche uniquement les opportunites actives et pertinentes.
           </p>
           <div className="hero-actions">
@@ -556,7 +556,7 @@ export function DashboardClient({ consultations, profile, savedIds: initialSaved
           <ChatAssistant totalMatches={sorted.length} urgentCount={urgentCount} topCategories={topCategories} />
 
           <div className="widget">
-            <p className="hero-kicker">Signal summary</p>
+            <p className="hero-kicker">Resume des signaux</p>
             <h3 className="section-title">Lecture IA en cours</h3>
             <div className="timeline">
               <div className="timeline-item">

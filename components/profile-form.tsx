@@ -31,18 +31,18 @@ export function ProfileForm({ initialValues }: ProfileFormProps) {
     });
 
     if (response.ok) {
-      setMessage('Profile updated successfully.');
+      setMessage('Profil mis a jour avec succes.');
       router.refresh();
     } else {
       const data = await response.json();
-      setMessage(data.error ?? 'Unable to update profile.');
+      setMessage(data.error ?? 'Impossible de mettre a jour le profil.');
     }
   }
 
   return (
     <form className="profile-grid" onSubmit={handleSubmit}>
       <label className="field">
-        <span>Full name</span>
+        <span>Nom complet</span>
         <input className="input" name="name" type="text" defaultValue={initialValues.name} required />
       </label>
       <label className="field">
@@ -54,12 +54,12 @@ export function ProfileForm({ initialValues }: ProfileFormProps) {
         <input className="input" name="phone" type="tel" defaultValue={initialValues.phone} />
       </label>
       <label className="field">
-        <span>Notification preferences</span>
+        <span>Preferences de notification</span>
         <textarea className="textarea" name="notificationPreferences" defaultValue={initialValues.notificationPreferences} />
       </label>
       {message ? <div className="assistant-answer">{message}</div> : null}
       <button className="button-strong" type="submit">
-        Save profile
+        Enregistrer le profil
       </button>
     </form>
   );

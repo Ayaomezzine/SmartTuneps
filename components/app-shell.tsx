@@ -17,7 +17,7 @@ export function AppShell({ activeHref, title, subtitle, children }: AppShellProp
         <Link className="brand" href="/dashboard">
           <span className="brand-mark" />
           <span>
-            <p className="brand-name">Smart TUNEPS</p>
+            <p className="brand-name">TPS</p>
             <p className="brand-copy">Plateforme de veille des achats publics</p>
           </span>
         </Link>
@@ -38,7 +38,7 @@ export function AppShell({ activeHref, title, subtitle, children }: AppShellProp
         <div className="sidebar-foot">
           <h3>Agent IA quotidien</h3>
           <p>
-            Explore TUNEPS chaque jour, lit les details et PDF, calcule les correspondances catalogue
+            Explore TUNEPS chaque jour, lit les details et les PDF, calcule les correspondances catalogue
             puis notifie automatiquement les utilisateurs concernes.
           </p>
         </div>

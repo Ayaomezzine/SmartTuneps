@@ -29,7 +29,7 @@ export function ThemeToggle() {
       suppressHydrationWarning
       onClick={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
     >
-      {mounted ? (theme === 'dark' ? 'Light mode' : 'Dark mode') : 'Theme'}
+      {mounted ? (theme === 'dark' ? 'Mode clair' : 'Mode sombre') : 'Theme'}
     </button>
   );
 }
