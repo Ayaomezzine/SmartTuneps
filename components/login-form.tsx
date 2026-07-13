@@ -44,20 +44,20 @@ export function LoginForm() {
   return (
     <form className="auth-form" onSubmit={handleSubmit}>
       <label>
-        Email
-        <input className="input" name="email" type="email" placeholder="you@company.com" required />
+        E-mail
+        <input className="input" name="email" type="email" placeholder="vous@entreprise.com" required />
       </label>
       <label>
-        Password
-        <input className="input" name="password" type="password" placeholder="Enter your password" required />
+        Mot de passe
+        <input className="input" name="password" type="password" placeholder="Entrez votre mot de passe" required />
       </label>
       {error ? <div className="assistant-answer">{error}</div> : null}
       <div className="auth-actions">
         <a className="button-ghost" href="/forgot-password">
-          Forgot password
+          Mot de passe oublie
         </a>
         <button className="button-strong" type="submit" disabled={loading}>
-          {loading ? 'Signing in...' : 'Sign in'}
+          {loading ? 'Connexion en cours...' : 'Se connecter'}
         </button>
       </div>
     </form>

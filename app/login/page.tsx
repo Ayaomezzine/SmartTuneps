@@ -5,12 +5,12 @@ import { LoginForm } from '@/components/login-form';
 export default function LoginPage() {
   return (
     <AuthShell
-      eyebrow="Authentication"
-      title="Sign in to Smart TUNEPS"
-      subtitle="Access your procurement dashboard, favorites, notifications, and AI assistant."
+      eyebrow="Authentification"
+      title="Connexion a Smart TUNEPS"
+      subtitle="Accedez a votre tableau de bord, vos favoris, vos notifications et votre assistant IA."
       footer={
         <>
-          No account yet? <Link href="/register">Create one</Link>.
+          Pas encore de compte ? <Link href="/register">Creer un compte</Link>.
         </>
       }
     >

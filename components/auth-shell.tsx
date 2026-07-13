@@ -19,7 +19,7 @@ export function AuthShell({ title, subtitle, eyebrow, children, footer }: AuthSh
             <span className="brand-mark" />
             <span>
               <p className="brand-name">Smart TUNEPS</p>
-              <p className="brand-copy">AI procurement intelligence</p>
+              <p className="brand-copy">Intelligence achats par IA</p>
             </span>
           </Link>
           <div className="auth-visual-card reveal">
@@ -27,21 +27,21 @@ export function AuthShell({ title, subtitle, eyebrow, children, footer }: AuthSh
             <h1>{title}</h1>
             <p>{subtitle}</p>
             <div className="hero-badges">
-              <span className="pill">Arabic + French intelligence</span>
-              <span className="pill">Daily discovery pipeline</span>
-              <span className="pill">Match scoring engine</span>
+              <span className="pill">Francais + arabe</span>
+              <span className="pill">Collecte quotidienne</span>
+              <span className="pill">Moteur de score</span>
             </div>
           </div>
         </div>
         <div className="inline-row">
-          <span className="muted">Premium procurement discovery for public tenders.</span>
+          <span className="muted">Detection premium des appels d&apos;offres publics.</span>
           <ThemeToggle />
         </div>
       </section>
       <section className="auth-card">
         <div className="section">
           <div>
-            <p className="hero-kicker">Secure access</p>
+            <p className="hero-kicker">Acces securise</p>
             <h2 className="section-title">{title}</h2>
             <p className="section-subtitle">{subtitle}</p>
           </div>

@@ -5,12 +5,12 @@ import { RegisterForm } from '@/components/register-form';
 export default function RegisterPage() {
   return (
     <AuthShell
-      eyebrow="Get started"
-      title="Create your Smart TUNEPS account"
-      subtitle="Set up your company profile, product categories, and alert preferences in minutes."
+      eyebrow="Commencer"
+      title="Creer votre compte Smart TUNEPS"
+      subtitle="Configurez votre profil entreprise, vos categories de produits et vos alertes en quelques minutes."
       footer={
         <>
-          Already registered? <Link href="/login">Sign in</Link>.
+          Deja inscrit ? <Link href="/login">Se connecter</Link>.
         </>
       }
     >

@@ -74,48 +74,48 @@ export function RegisterForm() {
   return (
     <form className="auth-form" onSubmit={handleSubmit}>
       <label>
-        Full name
-        <input className="input" name="name" type="text" placeholder="Your full name" required />
+        Nom complet
+        <input className="input" name="name" type="text" placeholder="Votre nom complet" required />
       </label>
       <label>
-        Company name
-        <input className="input" name="companyName" type="text" placeholder="Your company name" required />
+        Nom de l&apos;entreprise
+        <input className="input" name="companyName" type="text" placeholder="Nom de votre entreprise" required />
       </label>
       <label>
-        Business sector
-        <input className="input" name="businessSector" type="text" placeholder="Office Supplies and IT Equipment" required />
+        Secteur d&apos;activite
+        <input className="input" name="businessSector" type="text" placeholder="Fournitures de bureau et equipements informatiques" required />
       </label>
       <label>
-        VAT number
-        <input className="input" name="vatNumber" type="text" placeholder="Optional" />
+        Numero de TVA
+        <input className="input" name="vatNumber" type="text" placeholder="Facultatif" />
       </label>
       <label>
-        Address
-        <input className="input" name="address" type="text" placeholder="Business address" required />
+        Adresse
+        <input className="input" name="address" type="text" placeholder="Adresse de l&apos;entreprise" required />
       </label>
       <label>
-        Phone
+        Telephone
         <input className="input" name="phone" type="tel" placeholder="+216..." required />
       </label>
       <label>
-        Email
-        <input className="input" name="email" type="email" placeholder="you@company.com" required />
+        E-mail
+        <input className="input" name="email" type="email" placeholder="vous@entreprise.com" required />
       </label>
       <label>
-        Password
-        <input className="input" name="password" type="password" placeholder="Create a strong password" required />
+        Mot de passe
+        <input className="input" name="password" type="password" placeholder="Créez un mot de passe fort" required />
       </label>
       <label>
-        Products you sell
+        Produits que vous vendez
         <input className="input" name="products" type="text" defaultValue={defaultProducts} />
       </label>
       <label>
-        Custom products description
-        <textarea className="textarea" name="customProducts" defaultValue="I sell Epson toners, Dell laptops and office chairs." />
+        Description des produits
+        <textarea className="textarea" name="customProducts" defaultValue="Je vends des toners Epson, des ordinateurs portables Dell et des chaises de bureau." />
       </label>
       {error ? <div className="assistant-answer">{error}</div> : null}
       <button className="button-strong" type="submit" disabled={loading}>
-        {loading ? 'Creating account...' : 'Create account'}
+        {loading ? 'Creation du compte...' : 'Creer le compte'}
       </button>
     </form>
   );
