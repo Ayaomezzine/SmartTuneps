@@ -327,8 +327,9 @@ export async function loadConsultations(profileText = defaultBusinessProfile.cus
 
     try {
       await ensureConsultationsFresh();
-    } catch {
-      // Keep dashboard available even if auto-refresh fails.
+    } catch (error) {
+      // Keep dashboard available even if auto-refresh fails, but log for serverless diagnostics.
+      console.error('ensureConsultationsFresh failed', error);
     }
 
     const { start, end } = getRecentPublicationWindow();
@@ -346,8 +347,9 @@ export async function loadConsultations(profileText = defaultBusinessProfile.cus
     });
     const built = await Promise.all(rows.map((row) => buildConsultationFromRow(row, profileText)));
     return built.filter((item): item is Consultation => item !== null);
-  } catch {
+  } catch (error) {
     // If DB is temporarily unavailable in serverless runtime, avoid hard-crashing the app shell.
+    console.error('loadConsultations failed', error);
     return [];
   }
 }
