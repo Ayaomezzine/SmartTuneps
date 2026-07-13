@@ -3,13 +3,24 @@ import { prisma } from '@/lib/prisma';
 import { getSessionFromRequest } from '@/lib/session';
 import { matchConsultation } from '@/lib/matching';
 
+function isCronAuthorized(request: Request) {
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return false;
+
+  const headerToken = request.headers.get('x-cron-token');
+  if (headerToken === secret) return true;
+
+  const authHeader = request.headers.get('authorization') ?? '';
+  return authHeader === `Bearer ${secret}`;
+}
+
 function companyProfileText(company: { productsJson: string; customProducts: string; businessSector: string; companyName: string }) {
   return [company.companyName, company.businessSector, company.customProducts, company.productsJson].join(' ');
 }
 
 export async function POST(request: Request) {
   try {
-    const cronAuthorized = Boolean(process.env.CRON_SECRET) && request.headers.get('x-cron-token') === process.env.CRON_SECRET;
+    const cronAuthorized = isCronAuthorized(request);
     const session = await getSessionFromRequest(request as never);
     if (!session && !cronAuthorized) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

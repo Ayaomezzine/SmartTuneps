@@ -2,8 +2,19 @@ import { NextResponse } from 'next/server';
 import { getSessionFromRequest } from '@/lib/session';
 import { prisma } from '@/lib/prisma';
 
+function isCronAuthorized(request: Request) {
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return false;
+
+  const headerToken = request.headers.get('x-cron-token');
+  if (headerToken === secret) return true;
+
+  const authHeader = request.headers.get('authorization') ?? '';
+  return authHeader === `Bearer ${secret}`;
+}
+
 async function canRun(request: Request) {
-  const cronAuthorized = Boolean(process.env.CRON_SECRET) && request.headers.get('x-cron-token') === process.env.CRON_SECRET;
+  const cronAuthorized = isCronAuthorized(request);
   if (cronAuthorized) return true;
 
   const session = await getSessionFromRequest(request as never);

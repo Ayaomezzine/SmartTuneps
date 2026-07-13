@@ -4,8 +4,19 @@ import { getSessionFromRequest } from '@/lib/session';
 import { crawlerSchema } from '@/lib/validators';
 import { runCrawlerJob } from '@/lib/crawler-job';
 
+function isCronAuthorized(request: Request) {
+  const secret = process.env.CRON_SECRET;
+  if (!secret) return false;
+
+  const headerToken = request.headers.get('x-cron-token');
+  if (headerToken === secret) return true;
+
+  const authHeader = request.headers.get('authorization') ?? '';
+  return authHeader === `Bearer ${secret}`;
+}
+
 export async function POST(request: Request) {
-  const cronAuthorized = Boolean(process.env.CRON_SECRET) && request.headers.get('x-cron-token') === process.env.CRON_SECRET;
+  const cronAuthorized = isCronAuthorized(request);
   const session = await getSessionFromRequest(request as never);
   if (!session && !cronAuthorized) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
