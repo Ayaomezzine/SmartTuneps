@@ -9,7 +9,6 @@ function resolveDatabaseUrl() {
     process.env.DATABASE_URL,
     process.env.POSTGRES_PRISMA_URL,
     process.env.POSTGRES_URL,
-    process.env.NEON_DATABASE_URL,
     process.env.NETLIFY_DATABASE_URL
   ];
 
@@ -23,7 +22,7 @@ if (!process.env.DATABASE_URL && databaseUrl) {
 }
 
 if (!databaseUrl) {
-  console.error('Prisma database URL is missing. Set DATABASE_URL (or POSTGRES_URL/POSTGRES_PRISMA_URL/NEON_DATABASE_URL/NETLIFY_DATABASE_URL).');
+  console.error('Prisma database URL is missing. Set DATABASE_URL (or POSTGRES_URL/POSTGRES_PRISMA_URL/NETLIFY_DATABASE_URL).');
 }
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({
