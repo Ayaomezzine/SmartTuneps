@@ -47,15 +47,35 @@ async function runDailyJobs(request: Request) {
 }
 
 export async function GET(request: Request) {
-  if (!(await canRun(request))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    if (!(await canRun(request))) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    return runDailyJobs(request);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: 'Daily GET job failed',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    );
   }
-  return runDailyJobs(request);
 }
 
 export async function POST(request: Request) {
-  if (!(await canRun(request))) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    if (!(await canRun(request))) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    return runDailyJobs(request);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: 'Daily POST job failed',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    );
   }
-  return runDailyJobs(request);
 }
