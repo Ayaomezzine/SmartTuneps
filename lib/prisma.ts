@@ -18,6 +18,10 @@ function resolveDatabaseUrl() {
 
 const databaseUrl = resolveDatabaseUrl();
 
+if (!process.env.DATABASE_URL && databaseUrl) {
+  process.env.DATABASE_URL = databaseUrl;
+}
+
 if (!databaseUrl) {
   console.error('Prisma database URL is missing. Set DATABASE_URL (or POSTGRES_URL/POSTGRES_PRISMA_URL/NEON_DATABASE_URL/NETLIFY_DATABASE_URL).');
 }
