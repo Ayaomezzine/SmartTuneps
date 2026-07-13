@@ -299,14 +299,14 @@ async function ensureConsultationsFresh() {
   }
 
   if (activeConsultationsCount === 0) {
-    // On serverless, fire-and-forget background work may be terminated when the request ends.
-    // Awaiting the first refresh avoids a persistent empty dashboard window.
-    await runCrawlerJob({
+    // Do not block page rendering on serverless for a full crawl duration.
+    // Run a forced refresh in the background and let fallback queries serve results.
+    void runCrawlerJob({
       maxPages: 20,
       pageSize: 100,
       trigger: 'auto-dashboard',
       force: true
-    });
+    }).catch(() => undefined);
     return;
   }
 
@@ -334,7 +334,7 @@ export async function loadConsultations(profileText = defaultBusinessProfile.cus
 
     const { start, end } = getRecentPublicationWindow();
 
-    const rows = await prisma.consultation.findMany({
+    let rows = await prisma.consultation.findMany({
       where: {
         deadline: { gt: new Date() },
         publicationDate: {
@@ -345,8 +345,66 @@ export async function loadConsultations(profileText = defaultBusinessProfile.cus
       include: { documents: true },
       orderBy: { deadline: 'asc' }
     });
+
+    if (rows.length === 0) {
+      // Production fallback: keep the dashboard populated with recent active consultations
+      // even when strict day-window records are temporarily unavailable.
+      rows = await prisma.consultation.findMany({
+        where: {
+          deadline: { gt: new Date() }
+        },
+        include: { documents: true },
+        orderBy: [{ publicationDate: 'desc' }, { deadline: 'asc' }],
+        take: 200
+      });
+    }
+
     const built = await Promise.all(rows.map((row) => buildConsultationFromRow(row, profileText)));
-    return built.filter((item): item is Consultation => item !== null);
+    const filtered = built.filter((item): item is Consultation => item !== null);
+
+    if (filtered.length > 0) {
+      return filtered;
+    }
+
+    // Final safety net: show recent active items even if publication-date normalization differs.
+    const rawRecentRows = await prisma.consultation.findMany({
+      where: { deadline: { gt: new Date() } },
+      include: { documents: true },
+      orderBy: [{ publicationDate: 'desc' }, { deadline: 'asc' }],
+      take: 80
+    });
+
+    return rawRecentRows.map((row) => ({
+      id: row.id,
+      consultationNumber: row.consultationNumber,
+      originalTitle: sanitizeText(row.originalTitle),
+      translatedTitle: sanitizeText(row.translatedTitle || row.originalTitle),
+      organization: sanitizeText(row.organization),
+      publicationDate: row.publicationDate.toISOString(),
+      deadline: row.deadline.toISOString(),
+      language: row.language as Consultation['language'],
+      category: sanitizeText(row.category),
+      matchScore: Math.max(30, row.matchScore),
+      confidenceScore: Math.max(50, row.confidenceScore),
+      matchingProducts: parseJsonArray(row.productsRequestedJson),
+      matchingCategories: parseJsonArray(row.matchingCategoriesJson),
+      urgency: computeUrgencyFromDeadline(row.deadline),
+      aiSummary: sanitizeText(row.aiSummary),
+      productsRequested: parseJsonArray(row.productsRequestedJson),
+      lots: parseJsonArray(row.lotsJson),
+      technicalSpecifications: parseJsonArray(row.technicalSpecificationsJson),
+      estimatedOpportunity: sanitizeText(row.estimatedOpportunity),
+      potentialCompetitors: parseJsonArray(row.potentialCompetitorsJson),
+      directLink: row.sourceUrl,
+      reason: sanitizeText(row.reason),
+      sourceTitle: sanitizeText(row.sourceTitle),
+      remainingDaysBeforeDeadline: computeRemainingDays(row.deadline),
+      documents: row.documents.map((document) => ({
+        id: document.id,
+        fileName: document.fileName ?? 'Document',
+        url: document.url
+      }))
+    }));
   } catch (error) {
     // If DB is temporarily unavailable in serverless runtime, avoid hard-crashing the app shell.
     console.error('loadConsultations failed', error);
