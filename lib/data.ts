@@ -272,13 +272,23 @@ async function seedConsultationsFromFile(profileText: string) {
 }
 
 async function ensureConsultationsFresh() {
+  const { start, end } = getRecentPublicationWindow();
+
   const [latestSuccessRun, activeConsultationsCount] = await Promise.all([
     prisma.crawlRun.findFirst({
       where: { status: 'SUCCESS' },
       orderBy: { startedAt: 'desc' },
       select: { startedAt: true }
     }),
-    prisma.consultation.count({ where: { deadline: { gt: new Date() } } })
+    prisma.consultation.count({
+      where: {
+        deadline: { gt: new Date() },
+        publicationDate: {
+          gte: start,
+          lt: end
+        }
+      }
+    })
   ]);
 
   const latestRunAgeMs = latestSuccessRun ? Date.now() - latestSuccessRun.startedAt.getTime() : Number.POSITIVE_INFINITY;
@@ -297,38 +307,47 @@ async function ensureConsultationsFresh() {
 }
 
 export async function loadConsultations(profileText = defaultBusinessProfile.customProducts) {
-  const existingCount = await prisma.consultation.count();
-  if (existingCount === 0) {
-    await seedConsultationsFromFile(profileText);
-  }
-
   try {
-    await ensureConsultationsFresh();
+    const existingCount = await prisma.consultation.count();
+    if (existingCount === 0) {
+      await seedConsultationsFromFile(profileText);
+    }
+
+    try {
+      await ensureConsultationsFresh();
+    } catch {
+      // Keep dashboard available even if auto-refresh fails.
+    }
+
+    const { start, end } = getRecentPublicationWindow();
+
+    const rows = await prisma.consultation.findMany({
+      where: {
+        deadline: { gt: new Date() },
+        publicationDate: {
+          gte: start,
+          lt: end
+        }
+      },
+      include: { documents: true },
+      orderBy: { deadline: 'asc' }
+    });
+    const built = await Promise.all(rows.map((row) => buildConsultationFromRow(row, profileText)));
+    return built.filter((item): item is Consultation => item !== null);
   } catch {
-    // Keep dashboard available even if auto-refresh fails.
+    // If DB is temporarily unavailable in serverless runtime, avoid hard-crashing the app shell.
+    return [];
   }
-
-  const { start, end } = getRecentPublicationWindow();
-
-  const rows = await prisma.consultation.findMany({
-    where: {
-      deadline: { gt: new Date() },
-      publicationDate: {
-        gte: start,
-        lt: end
-      }
-    },
-    include: { documents: true },
-    orderBy: { deadline: 'asc' }
-  });
-  const built = await Promise.all(rows.map((row) => buildConsultationFromRow(row, profileText)));
-  return built.filter((item): item is Consultation => item !== null);
 }
 
 export async function loadConsultationById(id: string, profileText = defaultBusinessProfile.customProducts) {
-  const row = await prisma.consultation.findUnique({ where: { id }, include: { documents: true } });
-  if (row) {
-    return buildConsultationFromRow(row, profileText);
+  try {
+    const row = await prisma.consultation.findUnique({ where: { id }, include: { documents: true } });
+    if (row) {
+      return buildConsultationFromRow(row, profileText);
+    }
+  } catch {
+    return null;
   }
 
   const consultations = await loadConsultations(profileText);
