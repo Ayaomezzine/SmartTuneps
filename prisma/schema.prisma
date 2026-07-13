@@ -1,0 +1,183 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum NotificationChannel {
+  EMAIL
+  BROWSER
+  REPORT
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+model User {
+  id                     String              @id @default(cuid())
+  email                  String              @unique
+  passwordHash           String
+  name                   String
+  role                   UserRole            @default(USER)
+  phone                  String?
+  notificationPreferences String             @default("{}")
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
+  company                Company?
+  savedConsultations     SavedConsultation[]
+  notifications          Notification[]
+  auditLogs              AuditLog[]
+  passwordResetTokens    PasswordResetToken[]
+}
+
+model Company {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  companyName   String
+  businessSector String
+  vatNumber     String?
+  address       String
+  phone         String
+  email         String
+  productsJson  String   @default("[]")
+  customProducts String   @default("")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Consultation {
+  id                   String               @id
+  consultationNumber   String               @unique
+  sourceUrl            String
+  originalTitle        String
+  translatedTitle      String
+  organization         String
+  publicationDate      DateTime
+  deadline             DateTime
+  language             String
+  category             String
+  matchScore           Int                  @default(0)
+  confidenceScore      Int                  @default(0)
+  matchingCategoriesJson String              @default("[]")
+  urgency              String
+  aiSummary            String
+  productsRequestedJson String               @default("[]")
+  lotsJson             String               @default("[]")
+  technicalSpecificationsJson String         @default("[]")
+  estimatedOpportunity String
+  potentialCompetitorsJson String            @default("[]")
+  reason               String
+  sourceTitle          String
+  pdfText              String?
+  embeddings           String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  documents            Document[]
+  savedBy              SavedConsultation[]
+  notifications        Notification[]
+  crawlLinks           CrawlRunItem[]
+}
+
+model Document {
+  id              String       @id @default(cuid())
+  consultationId  String
+  consultation    Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+  url             String
+  fileName        String?
+  mimeType        String?
+  extractedText   String?
+  checksum        String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model SavedConsultation {
+  id             String       @id @default(cuid())
+  userId         String
+  consultationId String
+  status         String       @default("saved")
+  note           String?
+  archivedAt     DateTime?
+  submittedAt    DateTime?
+  wonAt          DateTime?
+  lostAt         DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  consultation   Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, consultationId])
+}
+
+model Notification {
+  id            String               @id @default(cuid())
+  userId        String
+  user          User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channel       NotificationChannel
+  title         String
+  body          String
+  consultationId String?
+  consultation   Consultation?        @relation(fields: [consultationId], references: [id], onDelete: SetNull)
+  payload       String               @default("{}")
+  readAt        DateTime?
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action     String
+  entityType String?
+  entityId   String?
+  payload    String   @default("{}")
+  createdAt  DateTime @default(now())
+}
+
+model CrawlRun {
+  id          String         @id @default(cuid())
+  status      JobStatus      @default(PENDING)
+  startedAt   DateTime       @default(now())
+  finishedAt  DateTime?
+  pageCount   Int            @default(0)
+  consultationCount Int      @default(0)
+  error       String?
+  payload     String         @default("{}")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  items       CrawlRunItem[]
+}
+
+model CrawlRunItem {
+  id             String       @id @default(cuid())
+  crawlRunId     String
+  consultationId String
+  crawlRun       CrawlRun     @relation(fields: [crawlRunId], references: [id], onDelete: Cascade)
+  consultation   Consultation @relation(fields: [consultationId], references: [id], onDelete: Cascade)
+
+  @@unique([crawlRunId, consultationId])
+}
+
+model PasswordResetToken {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  usedAt     DateTime?
+  createdAt  DateTime @default(now())
+}

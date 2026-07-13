@@ -1,0 +1,10 @@
+[build]
+  command = "npm run build"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[scheduled.functions]]
+  name = "daily-refresh"
+  cron = "0 6 * * *"
