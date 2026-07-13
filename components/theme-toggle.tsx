@@ -10,8 +10,7 @@ export function ThemeToggle() {
 
   useEffect(() => {
     const storedTheme = window.localStorage.getItem(STORAGE_KEY) as 'light' | 'dark' | null;
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const nextTheme = storedTheme ?? (prefersDark ? 'dark' : 'light');
+    const nextTheme = storedTheme ?? 'light';
     setTheme(nextTheme);
     document.documentElement.dataset.theme = nextTheme;
     setMounted(true);

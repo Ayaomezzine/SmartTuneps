@@ -7,10 +7,9 @@ const themeInitScript = `
   const STORAGE_KEY = 'smart-tuneps-theme';
   try {
     const storedTheme = window.localStorage.getItem(STORAGE_KEY);
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     const theme = storedTheme === 'light' || storedTheme === 'dark'
       ? storedTheme
-      : (prefersDark ? 'dark' : 'light');
+      : 'light';
     document.documentElement.dataset.theme = theme;
   } catch {
     document.documentElement.dataset.theme = 'light';
