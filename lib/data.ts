@@ -302,8 +302,8 @@ async function ensureConsultationsFresh() {
     // Do not block page rendering on serverless for a full crawl duration.
     // Run a forced refresh in the background and let fallback queries serve results.
     void runCrawlerJob({
-      maxPages: 20,
-      pageSize: 100,
+      maxPages: 6,
+      pageSize: 60,
       trigger: 'auto-dashboard',
       force: true
     }).catch(() => undefined);
@@ -311,8 +311,8 @@ async function ensureConsultationsFresh() {
   }
 
   void runCrawlerJob({
-    maxPages: 20,
-    pageSize: 100,
+    maxPages: 6,
+    pageSize: 60,
     trigger: 'auto-dashboard',
     force: false
   }).catch(() => undefined);

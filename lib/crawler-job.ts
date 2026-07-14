@@ -26,6 +26,7 @@ type RunCrawlerJobResult = {
 };
 
 const AUTO_REFRESH_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+const RUNNING_STALE_MS = 15 * 60 * 1000;
 
 const globalForCrawlerJob = globalThis as unknown as {
   crawlerJobPromise?: Promise<RunCrawlerJobResult>;
@@ -79,6 +80,35 @@ async function runCrawlerJobInternal(options: Required<RunCrawlerJobOptions>): P
       consultations: 0,
       skipped: true,
       reason: skipReason
+    };
+  }
+
+  const staleBefore = new Date(Date.now() - RUNNING_STALE_MS);
+  await prisma.crawlRun.updateMany({
+    where: {
+      status: 'RUNNING',
+      startedAt: { lt: staleBefore }
+    },
+    data: {
+      status: 'FAILED',
+      finishedAt: new Date(),
+      error: 'stale-run-timeout'
+    }
+  });
+
+  const inProgress = await prisma.crawlRun.findFirst({
+    where: { status: 'RUNNING' },
+    orderBy: { startedAt: 'desc' },
+    select: { id: true, startedAt: true }
+  });
+
+  if (inProgress) {
+    return {
+      runId: inProgress.id,
+      pages: 0,
+      consultations: 0,
+      skipped: true,
+      reason: `Crawler already running since ${inProgress.startedAt.toISOString()}.`
     };
   }
 

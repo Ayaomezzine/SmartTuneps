@@ -34,7 +34,7 @@ async function runDailyJobs(request: Request) {
       'content-type': 'application/json',
       ...(cronToken ? { 'x-cron-token': cronToken } : {})
     },
-    body: JSON.stringify({ maxPages: 20, pageSize: 100 })
+    body: JSON.stringify({ maxPages: 6, pageSize: 60 })
   });
   const crawlerPayload = await crawlerResponse.json().catch(() => ({}));
   if (!crawlerResponse.ok) {
