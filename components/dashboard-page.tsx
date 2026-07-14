@@ -22,6 +22,13 @@ export default async function DashboardPage() {
     : defaultBusinessProfile;
 
   const consultations = await loadConsultations(profile.customProducts);
+  const now = new Date();
+  const startTodayUtc = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const endTodayUtc = startTodayUtc + 24 * 60 * 60 * 1000;
+  const hasTodayPublications = consultations.some((consultation) => {
+    const publicationTs = new Date(consultation.publicationDate).getTime();
+    return Number.isFinite(publicationTs) && publicationTs >= startTodayUtc && publicationTs < endTodayUtc;
+  });
   const savedConsultationIds = user
     ? await prisma.savedConsultation.findMany({
       where: { userId: user.id },
@@ -37,9 +44,19 @@ export default async function DashboardPage() {
     <AppShell
       activeHref="/dashboard"
       title="Tableau de bord"
-      subtitle="Suivez les consultations TUNEPS actives et pertinentes publiees aujourd'hui et hier."
+      subtitle={hasTodayPublications
+        ? "Suivez les consultations TUNEPS actives et pertinentes publiees aujourd'hui et hier."
+        : 'Suivez les consultations TUNEPS actives et pertinentes des 2 derniers jours.'}
     >
-      <DashboardClient consultations={consultations} profile={profile} savedIds={savedIds} ignoredIds={ignoredIds} productCatalog={productCatalog} renderedAt={Date.now()} />
+      <DashboardClient
+        consultations={consultations}
+        profile={profile}
+        savedIds={savedIds}
+        ignoredIds={ignoredIds}
+        productCatalog={productCatalog}
+        renderedAt={Date.now()}
+        hasTodayPublications={hasTodayPublications}
+      />
     </AppShell>
   );
 }

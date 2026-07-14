@@ -14,6 +14,7 @@ interface DashboardClientProps {
   ignoredIds: string[];
   productCatalog: ProductRecord[];
   renderedAt: number;
+  hasTodayPublications: boolean;
 }
 
 type FilterState = 'all' | 'saved' | 'unread' | 'urgent';
@@ -190,7 +191,15 @@ function languageFromTitle(title: string) {
   return 'french';
 }
 
-export function DashboardClient({ consultations, profile, savedIds: initialSavedIds, ignoredIds: initialIgnoredIds, productCatalog, renderedAt }: DashboardClientProps) {
+export function DashboardClient({
+  consultations,
+  profile,
+  savedIds: initialSavedIds,
+  ignoredIds: initialIgnoredIds,
+  productCatalog,
+  renderedAt,
+  hasTodayPublications
+}: DashboardClientProps) {
   const [query, setQuery] = useState('');
   const [category, setCategory] = useState('Toutes');
   const [language, setLanguage] = useState('Toutes');
@@ -519,7 +528,11 @@ export function DashboardClient({ consultations, profile, savedIds: initialSaved
         <section className="section" id="consultations">
           <div className="section-head">
             <div>
-              <p className="hero-kicker">Consultations pertinentes d&apos;aujourd&apos;hui et d&apos;hier</p>
+              <p className="hero-kicker">
+                {hasTodayPublications
+                  ? 'Consultations pertinentes d\'aujourd\'hui et d\'hier'
+                  : 'Consultations pertinentes des 2 derniers jours'}
+              </p>
               <h3 className="section-title">Flux trie par date limite</h3>
               <p className="section-subtitle">
                 Les resultats sont scores semantiquement a partir de votre profil et de votre catalogue sur les publications des deux derniers jours.
