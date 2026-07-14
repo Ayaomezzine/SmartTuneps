@@ -145,7 +145,7 @@ export async function crawlTunepsConsultations(options: { maxPages: number; page
   const allItems = asItems(payload).map(sanitizeItemText);
 
   const parsePublishedAt = (value: string) => {
-    const parsed = new Date(value);
+    const parsed = parseTunepsDate(value) ?? new Date(value);
     return Number.isNaN(parsed.getTime()) ? 0 : parsed.getTime();
   };
 
